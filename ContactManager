@@ -1,0 +1,50 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package techie;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ *
+ * @author Bhaskar's PC
+ */
+public class ContactManager {
+    
+    Map<String, ContactManagerStarter> contactList = new ConcurrentHashMap<String, ContactManagerStarter>();
+    
+    public void addContact(String firstName, String lastName, String phoneNumber){
+        
+        ContactManagerStarter cms = new ContactManagerStarter(firstName, lastName, phoneNumber);
+        validateContact(cms);
+        checkIfContactAlreadyExist(cms);
+        contactList.put(generateKey(cms), cms);
+        
+    }
+    public Collection<cms> getAllContacts(){
+        return contactList.values();
+    }
+    
+    private void checkIfContactAlreadyExist(ContactManagerStarter contact){
+        if(contactList.containsKey(generateKey(contact)))
+            throw new RuntimeException("Contact already Exists");
+    }
+    
+    private void validateContact(ContactManagerStarter contact){
+        contact.validateFirstName();
+        contact.validateLastName();
+        contact.validatePhoneNumber();
+    }
+    
+    private String generateKey(ContactManagerStarter contact){
+      return String.format("%s-%s", contact.getFirstName(), contact.getLastName());  
+    }
+    
+    
+    
+    
+}
